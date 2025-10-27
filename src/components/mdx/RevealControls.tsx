@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useReveal } from "./RevealContext";
 
 export default function RevealControls() {
@@ -15,10 +15,13 @@ export default function RevealControls() {
     if (!draggingRef.current) setLocalRatio(ratio);
   }, [ratio]);
 
-  const commit = (v: number) => {
-    if (commitTimer.current) window.clearTimeout(commitTimer.current);
-    commitTimer.current = window.setTimeout(() => setRatio(v), 50);
-  };
+  const commit = useCallback(
+    (v: number) => {
+      if (commitTimer.current) window.clearTimeout(commitTimer.current);
+      commitTimer.current = window.setTimeout(() => setRatio(v), 50);
+    },
+    [setRatio]
+  );
 
   const onPointerDown = () => (draggingRef.current = true);
   const onPointerUp = () => {
@@ -40,7 +43,7 @@ export default function RevealControls() {
       window.removeEventListener("touchend", up);
       if (commitTimer.current) window.clearTimeout(commitTimer.current);
     };
-  }, [localRatio]);
+  }, [localRatio, commit]);
 
   // ===== 모바일 전용: FAB + 바텀시트 =====
   const [open, setOpen] = useState(false);

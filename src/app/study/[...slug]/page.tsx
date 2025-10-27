@@ -11,7 +11,10 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 
 import { RevealProvider } from "@/components/mdx/RevealContext";
-import InlineCodeSwitch from "@/components/mdx/InlineCodeSwitch";
+import InlineCodeSwitch, {
+  type CodeProps,
+} from "@/components/mdx/InlineCodeSwitch";
+
 import RevealControls from "@/components/mdx/RevealControls";
 
 function slugify(t: string) {
@@ -159,7 +162,7 @@ export default async function StudyDetailPage({
                 },
               }}
               components={{
-                code: InlineCodeSwitch as any, // ← 확률 공개 스위처 (클라이언트)
+                code: InlineCodeSwitch as React.ComponentType<CodeProps>, // ← 확률 공개 스위처 (클라이언트)
               }}
             />
           </article>

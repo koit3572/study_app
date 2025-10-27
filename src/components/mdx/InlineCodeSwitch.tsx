@@ -4,7 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useReveal } from "./RevealContext";
 import InlineAnswerInput from "./InlineAnswerInput";
 
-export default function InlineCodeSwitch(props: any) {
+export type CodeProps = React.HTMLAttributes<HTMLElement> & {
+  className?: string;
+  children?: React.ReactNode;
+};
+export default function InlineCodeSwitch(props: CodeProps) {
   const { children, className, ...rest } = props;
 
   // 1) 훅은 항상 같은 순서로 호출되어야 함

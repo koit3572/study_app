@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 type Status = "default" | "correct" | "wrong";
@@ -33,21 +39,22 @@ export default function InlineAnswerInput({
   const normalize = (s: string) =>
     s.normalize("NFC").replace(/\s+/g, "").trim();
 
-  const recalcWidth = () => {
+  const recalcWidth = useCallback(() => {
     if (!mirrorRef.current) return;
     const target = (value || answer || "").toString();
     mirrorRef.current.textContent = target + "  ";
     const w = mirrorRef.current.getBoundingClientRect().width;
     setInputWidth(Math.max(minWidthPx, Math.ceil(w + padPx)));
-  };
+  }, [value, answer, minWidthPx, padPx]);
 
   useLayoutEffect(() => {
     recalcWidth();
-  }, [value, answer]);
+  }, [recalcWidth]);
+
   useEffect(() => {
     const id = window.setTimeout(recalcWidth, 0);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [recalcWidth]);
 
   // ✅ cleanup은 블록으로 작성 (null 반환 금지)
   useEffect(() => {

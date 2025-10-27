@@ -74,7 +74,7 @@ function SelectCard({
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
   accent: string; // e.g. "from-sky-400 to-blue-500"
 }) {
-  const [hovered, setHovered] = useState(false);
+  const [, setHovered] = useState(false);
 
   return (
     <Link

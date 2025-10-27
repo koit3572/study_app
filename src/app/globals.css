@@ -1,5 +1,8 @@
 @import "tailwindcss";
+/* Tailwind v4: 플러그인 로드 */
+@plugin "@tailwindcss/typography";
 
+/* ====== 전역 테마 설정 ====== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,8 +22,142 @@
   }
 }
 
+/* 수평 흔들림/밀림 방지 */
+html, body {
+  max-width: 100%;
+  overflow-x: clip; /* iOS에서 hidden보다 안정적 */
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ====== Markdown (prose) 스타일 ====== */
+
+/* 제목 앵커(#) 표출 효과 */
+.prose .heading-anchor {
+  opacity: 0;
+  margin-left: 0.25rem;
+  font-size: 0.9em;
+  transition: opacity 0.15s ease;
+}
+.prose h1:hover .heading-anchor,
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor {
+  opacity: 1;
+}
+
+/* 코드 블록 (rehype-pretty-code) */
+pre > code {
+  display: grid;
+}
+pre [data-line] {
+  padding: 0 0.9rem;
+}
+pre [data-line].highlighted {
+  background: rgba(56, 189, 248, 0.12);
+  border-left: 3px solid rgb(56 189 248);
+}
+code[data-theme*="dark"] {
+  background: transparent !important;
+}
+
+/* 표 가로 스크롤 */
+.prose table {
+  display: block;
+  overflow-x: auto;
+}
+
+/* 인라인 코드칩 */
+.prose :where(code):not(:where(pre code)) {
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.4rem;
+  background: #f1f5f9; /* slate-100 */
+  font-weight: 500;
+  font-size: 0.92em;
+}
+
+/* 인용문(콜아웃) */
+.prose blockquote {
+  border-left: 3px solid rgb(56 189 248); /* sky-400 */
+  background: linear-gradient(
+    0deg,
+    rgba(56, 189, 248, 0.05),
+    rgba(56, 189, 248, 0.05)
+  );
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: #334155; /* slate-700 */
+}
+
+/* 이미지/비디오 라운드 & 그림자 */
+.prose img,
+.prose video {
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* ====== h라인 (전체 화면 길이에 맞춰 확장) ====== */
+.prose h2,
+.prose h3 {
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+
+/* 전체 폭으로 확장된 밑줄 */
+.prose h2::after,
+.prose h3::after {
+  content: "";
+  display: block;
+  width: 100%; /* 화면/컨테이너 폭에 맞춰 꽉 차게 */
+  height: 2px;
+  margin-top: 0.3rem;
+  background: linear-gradient(
+    90deg,
+    rgba(56, 189, 248, 0.8),
+    rgba(139, 92, 246, 0.8)
+  ); /* sky → violet */
+  border-radius: 999px;
+}
+
+/* ====== 표 제목, 리스트 개선 ====== */
+.prose th {
+  background-color: #f8fafc;
+  font-weight: 600;
+}
+.prose ul > li::marker {
+  color: rgb(56, 189, 248);
+}
+
+/* === TOC 높이 제한 + 스크롤 === */
+.toc-card {
+  /* 데스크톱: 뷰포트 높이 기준 적당히 제한 + sticky 유지 */
+  max-height: calc(100vh - 7rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: .25rem; /* 스크롤바와 텍스트 간격 */
+}
+
+/* 모바일(<= md)에서는 더 낮게 제한 */
+@media (max-width: 768px) {
+  .toc-card {
+    max-height: 40vh; /* 필요에 따라 35~50vh로 조절 */
+  }
+}
+
+/* (선택) 스크롤바 스타일링 */
+.toc-card::-webkit-scrollbar {
+  width: 8px;
+}
+.toc-card::-webkit-scrollbar-thumb {
+  background: rgba(100,116,139,.35); /* slate-500 약하게 */
+  border-radius: 999px;
+}
+.toc-card:hover::-webkit-scrollbar-thumb {
+  background: rgba(2,132,199,.55);   /* sky-600 hover 시 강조 */
 }

@@ -22,6 +22,11 @@
   }
 }
 
+.prose table td,
+.prose table th {
+  white-space: pre-line; /* \n(실제 줄바꿈 문자) → 줄바꿈 렌더 */
+}
+
 /* 수평 흔들림/밀림 방지 */
 html, body {
   max-width: 100%;
@@ -105,17 +110,15 @@ code[data-theme*="dark"] {
 .prose h2,
 .prose h3 {
   position: relative;
-  padding-bottom: 0.4rem;
 }
 
 /* 전체 폭으로 확장된 밑줄 */
-.prose h2::after,
-.prose h3::after {
+.prose h2::after{
   content: "";
   display: block;
   width: 100%; /* 화면/컨테이너 폭에 맞춰 꽉 차게 */
   height: 2px;
-  margin-top: 0.3rem;
+  margin-top: 0.1rem;
   background: linear-gradient(
     90deg,
     rgba(56, 189, 248, 0.8),

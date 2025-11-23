@@ -190,14 +190,3 @@ export default function HomePage() {
     </main>
   );
 }
-
-// (선택) 글로벌 키바인딩: /src/app/(home)/page.tsx 하단에 추가해도 됨.
-// useEffect(() => {
-//   function onKey(e: KeyboardEvent) {
-//     if (e.key === '1') window.location.href = '/study';
-//     if (e.key === '2') window.location.href = '/random';
-//     if (e.key === '3') window.location.href = '/quiz';
-//   }
-//   window.addEventListener('keydown', onKey);
-//   return () => window.removeEventListener('keydown', onKey);
-// }, []);

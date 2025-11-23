@@ -153,7 +153,6 @@ export default function InlineAnswerInput({
           placeholder=""
           style={{ width: "100%" }}
         />
-
         <button
           type="button"
           aria-label={showAnswer ? "정답 숨기기" : "정답 보기"}
@@ -166,7 +165,6 @@ export default function InlineAnswerInput({
             <FaRegEye className="h-3.5 w-3.5" />
           )}
         </button>
-
         {showAnswer && (
           <div className="absolute left-0 top-full z-20 mt-1 rounded-md border border-slate-200 bg-white/95 px-2 py-1 text-[0.9em] text-slate-700 shadow-sm">
             {answer}

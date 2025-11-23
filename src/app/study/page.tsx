@@ -1,6 +1,8 @@
-// src/app/study/page.tsx
 import Link from "next/link";
 import { collectMarkdownTree, MDFolder } from "@/lib/collectMarkdown";
+import { buildStudyIndex } from "@/lib/studyIndex";
+import StudySearch from "@/components/mdx/StudySearch";
+import { toStudyHref } from "@/lib/studyIndex";
 
 function FolderIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -32,10 +34,6 @@ function CountPill({ label }: { label: string }) {
   );
 }
 
-/**
- * 단일 섹션 컴포넌트: 루트/하위 폴더 모두 동일 스타일로 렌더
- * - 루트는 folder.path === "" 로 식별, 표시명만 "루트"로 보임
- */
 function FolderSection({
   folder,
   depth = 0,
@@ -46,7 +44,7 @@ function FolderSection({
   if (folder.files.length === 0 && folder.folders.length === 0) return null;
 
   const isRoot = folder.path === "";
-  const title = isRoot ? "루트 폴더" : folder.name;
+  const title = isRoot ? "학습파일" : folder.name;
   const shownPath = isRoot ? "src/posts" : folder.path;
 
   return (
@@ -68,7 +66,7 @@ function FolderSection({
           {folder.files.map((f) => (
             <li key={f.slug}>
               <Link
-                href={`/study/${f.slug}`}
+                href={toStudyHref(f.slug)}
                 className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white/80 px-3 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <FileIcon className="h-5 w-5 text-sky-500" />
@@ -82,7 +80,7 @@ function FolderSection({
       )}
 
       {folder.folders.length > 0 && (
-        <div className="mt-4 space-y-4 pl-4">
+        <div className="mt-4 space-y-4">
           {folder.folders.map((child) => (
             <FolderSection key={child.path} folder={child} depth={depth + 1} />
           ))}
@@ -94,6 +92,12 @@ function FolderSection({
 
 export default async function StudyListPage() {
   const tree = collectMarkdownTree();
+  const index = buildStudyIndex();
+  const items = index.map((x) => ({
+    title: x.title,
+    href: toStudyHref(x.slug),
+    fullPathLabel: x.fullPathLabel,
+  }));
 
   return (
     <main className="min-h-[60vh]">
@@ -108,6 +112,7 @@ export default async function StudyListPage() {
         <p className="mt-1 max-w-prose text-slate-600 md:text-[15px]">
           원하는 학습목표를 설정하여 더 효율적인 학습을 진행하세요.
         </p>
+        <StudySearch items={items} />
       </header>
 
       {tree.folders.length === 0 && tree.files.length === 0 ? (

@@ -13,14 +13,14 @@ import InlineCodeSwitch, {
 import RevealControls from "@/components/mdx/RevealControls";
 import { toStudyHref } from "@/lib/studyIndex";
 import {
-  getAllStudySlugs,
   getMarkdownBySlug,
   fromUrlSegments,
-  toUrlSegments,
   type Frontmatter,
 } from "@/lib/studyFs";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 /* ───────────── 유틸 ───────────── */
 
@@ -49,7 +49,6 @@ function tocOf(md: string) {
     return [{ level, text, id }];
   });
 }
-
 
 function extractBlocksBetweenDashes(content: string): string[] {
   const lines = content.split(/\r?\n/);
@@ -102,7 +101,7 @@ function pickRandomProblemBlock(content: string): string {
 }
 
 type PageProps = {
-  params: Promise<{ slug: string[] }>;
+  params: { slug: string[] };
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
@@ -112,7 +111,7 @@ export default async function RandomStudyPage({
   params,
   searchParams,
 }: PageProps) {
-  const { slug } = await params;
+  const { slug } = params;
   const decoded = fromUrlSegments(slug);
 
   let data: Frontmatter, content: string;
@@ -290,11 +289,4 @@ export default async function RandomStudyPage({
       </RevealProvider>
     </main>
   );
-}
-
-/* 학습하기와 동일하게 정적 생성 */
-export async function generateStaticParams() {
-  const all = getAllStudySlugs();
-  const params = all.map((slugArr) => ({ slug: toUrlSegments(slugArr) }));
-  return params;
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import Header from "@/components/layout/HomeHeader";
+import HomeHeader from "@/components/layout/HomeHeader";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -16,11 +16,13 @@ export default function HomeGroupLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50 text-slate-900 antialiased">
-        {/* 스크롤 방향에 따라 나타나는 헤더 */}
-        <Header />
+        {/* 항상 상단에 붙어있는 헤더 */}
+        <HomeHeader />
 
-        {/* 기존 내용 */}
-        <div className="mx-auto max-w-5xl px-4 py-10 md:py-20">{children}</div>
+        {/* 헤더 높이만큼 위에 여백을 줘서 겹치지 않게 */}
+        <main className="mx-auto max-w-5xl px-4 pt-20 md:pt-24 pb-10 md:pb-16">
+          {children}
+        </main>
       </body>
     </html>
   );

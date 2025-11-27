@@ -70,7 +70,7 @@ export default async function StudyPage({ params }: PageProps) {
   const toc = tocOf(content);
 
   return (
-    <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-[1fr_260px]">
+    <main className=" mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-[1fr_260px]">
       <RevealProvider>
         <article className="min-w-0">
           <div className="mb-5 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
@@ -139,7 +139,7 @@ export default async function StudyPage({ params }: PageProps) {
         </article>
 
         <aside className="order-first md:order-last">
-          <div className="xl:sticky xl:top-12 rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm">
+          <div className="xl:sticky xl:top-24 rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm">
             <h3 className="mb-2 text-sm font-semibold">목차</h3>
             {toc.length === 0 ? (
               <p className="text-xs text-slate-400">
